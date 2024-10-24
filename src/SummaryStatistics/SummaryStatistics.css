@@ -1,0 +1,36 @@
+/* src/SummaryStatistics/SummaryStatistics.css */
+
+.summary-statistics {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.stat {
+  flex: 1 1 200px;
+  margin: 10px;
+}
+
+.stat h3 {
+  margin-bottom: 10px;
+  color: #ff6f61;
+}
+
+.stat p,
+.stat ul {
+  font-size: 1rem;
+}
+
+.stat ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.stat ul li {
+  margin-bottom: 5px;
+}
