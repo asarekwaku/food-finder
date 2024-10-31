@@ -1,14 +1,16 @@
-// src/App.jsx
-// src/App.jsx
+// src/App.js
 
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { Routes, Route } from 'react-router-dom'; // Import Routes and Route
 import Header from './Header/Header';
 import SearchBar from './SearchBar/SearchBar';
 import Filters from './Filters/Filters';
 import SummaryStatistics from './SummaryStatistics/SummaryStatistics';
 import RecipeList from './Recipe/RecipeList/RecipeList';
 import Pagination from './Pagination/Pagination';
+import DataVisualizationBoard from './components/DataVisualizationBoard/DataVisualizationBoard';
+import RecipeDetail from './Recipe/RecipeDetail/RecipeDetail'; // Import RecipeDetail
 import { CacheContext } from './contexts/CacheContext';
 import './App.css'; // Optional: For styling
 
@@ -131,7 +133,8 @@ const App = () => {
       // Enhanced Error Handling
       if (err.response) {
         // Server responded with a status other than 2xx
-        if (err.response.status === 402) { // Assuming 402 for quota exceeded
+        if (err.response.status === 402) {
+          // Assuming 402 for quota exceeded
           setError('API quota exceeded. Please try again later.');
         } else {
           setError(`Error: ${err.response.data.message || 'An error occurred.'}`);
@@ -210,7 +213,7 @@ const App = () => {
   const currentRecipes = recipes; // API provides paginated data based on 'offset' and 'number'
 
   // ------------------------------
-  // Render the Component
+  // Render the Component with Routing
   // ------------------------------
 
   return (
@@ -218,35 +221,51 @@ const App = () => {
       {/* Header Component */}
       <Header />
 
-      {/* SearchBar Component */}
-      <SearchBar setSearchQuery={setSearchQuery} />
+      <Routes>
+        {/* List View Route */}
+        <Route
+          path="/"
+          element={
+            <>
+              {/* SearchBar Component */}
+              <SearchBar setSearchQuery={setSearchQuery} />
 
-      {/* Filters Component */}
-      <Filters filters={filters} setFilters={setFilters} />
+              {/* Filters Component */}
+              <Filters filters={filters} setFilters={setFilters} />
 
-      {/* Loading Indicator */}
-      {loading && <p className="loading">Loading...</p>}
+              {/* Loading Indicator */}
+              {loading && <p className="loading">Loading...</p>}
 
-      {/* Error Message */}
-      {error && <p className="error">{error}</p>}
+              {/* Error Message */}
+              {error && <p className="error">{error}</p>}
 
-      {/* SummaryStatistics Component */}
-      <SummaryStatistics stats={summaryStats} />
+              {/* SummaryStatistics Component */}
+              <SummaryStatistics stats={summaryStats} />
 
-      {/* RecipeList Component */}
-      <RecipeList recipes={currentRecipes} />
+              {/* Data Visualization Board Component */}
+              <DataVisualizationBoard stats={summaryStats} />
 
-      {/* Pagination Component */}
-      {totalPages > 1 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={(page) => setCurrentPage(page)}
+              {/* RecipeList Component */}
+              <RecipeList recipes={currentRecipes} />
+
+              {/* Pagination Component */}
+              {totalPages > 1 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={(page) => setCurrentPage(page)}
+                />
+              )}
+
+              {/* Welcome Message */}
+              <p className="welcome-message">Welcome to the Recipe Search App!</p>
+            </>
+          }
         />
-      )}
 
-      {/* Welcome Message */}
-      <p className="welcome-message">Welcome to the Recipe Search App!</p>
+        {/* Detail View Route */}
+        <Route path="/recipe/:id" element={<RecipeDetail />} />
+      </Routes>
     </div>
   );
 };

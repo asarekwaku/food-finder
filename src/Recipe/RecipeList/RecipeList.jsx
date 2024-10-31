@@ -3,6 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import RecipeCard from '../RecipeCard/RecipeCard';
+import { Link } from 'react-router-dom'; // Import Link
 import './RecipeList.css';
 
 const RecipeList = ({ recipes }) => {
@@ -13,7 +14,9 @@ const RecipeList = ({ recipes }) => {
   return (
     <div className="recipe-list">
       {recipes.map((recipe) => (
-        <RecipeCard key={recipe.id} recipe={recipe} />
+        <Link to={`/recipe/${recipe.id}`} key={recipe.id} className="recipe-link">
+          <RecipeCard recipe={recipe} />
+        </Link>
       ))}
     </div>
   );
